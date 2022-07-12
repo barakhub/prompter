@@ -33,8 +33,9 @@ app.get('/', async (req, res) => {
   }
 });
 
+console.log(`Looking for file ${argv.file}`);
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Prompter app listening on port ${port}`);
 })
 
 async function loadFile() {
