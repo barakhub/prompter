@@ -1,5 +1,6 @@
-# This is a sample markdown
+## This is a sample markdown
 
+### Hotel California
 
 On a dark desert highway
 Cool wind in my hair

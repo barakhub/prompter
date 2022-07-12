@@ -7,9 +7,6 @@ const ejs = require('ejs');
 const TEMPLATE = __dirname + '/templates/index.html';
 const MISSING = __dirname + '/templates/missing.html';
 
-// One last motify time for two files. Yeh, whatever last wins.
-let lastModifyTime = 0;
-
 const app = express()
 
 const argv = yargs
@@ -26,6 +23,10 @@ const argv = yargs
     })
     .help().alias('help', 'h').argv;
 
+const lastModifyTime = {};
+lastModifyTime[TEMPLATE] = 0;
+lastModifyTime[argv.file] = 0;
+
 const port = argv.port
 
 app.get('/', async (req, res) => {
@@ -39,12 +40,13 @@ app.get('/', async (req, res) => {
 
 app.get('/check', async (req, res) => {
   const isTemplate = req.query.t === '1';
-  const modifyTime = await getModifyTime(isTemplate ? TEMPLATE : argv.file);
+  const fileName = isTemplate ? TEMPLATE : argv.file;
+  const modifyTime = await getModifyTime(fileName);
   let result = '';
   if (modifyTime === 0) {
     result = 'missing';
-  } else if (modifyTime > lastModifyTime) {
-    lastModifyTime = modifyTime;
+  } else if (modifyTime > lastModifyTime[fileName]) {
+    lastModifyTime[fileName] = modifyTime;
     result = 'new';
   } else {
     result = 'exists';

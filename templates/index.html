@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html>
 <style>
-  html { background-color: grey; color: white; }
-  body { font-size: 200%; font-family: sans-serif; line-height: 150%; }
+  html { background-color: #004; color: white; }
+  body { font-size: 250%; font-family: sans-serif; line-height: 150%; }
+  #ontop { position: fixed; top: 20px; left: 20px; background-color: white; color: black }
 </style>
 <body>
   <%- content %>
+  <div id="ontop"></div>
 </body>
 <script>
   let scrollUp = false;
   let scrollDown = false;
+
+  let resetCount = 0;
 
   document.body.addEventListener('keydown', event => {
     keyEvent(event.key, true);
@@ -20,30 +24,45 @@
 
   function keyEvent(key, isDown) {
     if (event.key === '-') {
-      scrollUp = isDown;
-    } else if (event.key === '=') {
       scrollDown = isDown;
+    } else if (event.key === '=') {
+      scrollUp = isDown;
     }
   }
 
   window.setInterval(() => {
-    if (scrollUp) {
-      window.scrollBy(0, -10);
-    } else if (scrollDown) {
-      window.scrollBy(0, 10);
+    if (scrollUp && scrollDown) {
+      if (resetCount++ > 30) {
+        window.scrollTo(0, 0);
+      }
     } else {
-      // skip
+      resetCount = 0;
+      if (scrollUp) {
+        window.scrollBy(0, -5);
+      } else if (scrollDown) {
+        window.scrollBy(0, 5);
+      } else {
+        // skip
+      }
     }
-  }, 100);
+  }, 33);
 
   window.setInterval(() => {
     getAjax('/check?t=1', data => {
-      console.info(data);
       if (data === 'new') {
         window.location.reload();
       }
-    })
+    });
   }, 2000);
+
+
+  window.setInterval(() => {
+    getAjax('/check', data => {
+      if (data === 'new' || data === 'missing') {
+        window.location.reload();
+      }
+    });
+  }, 5000);
 
   function getAjax(url, success) {
     var xhr = new XMLHttpRequest();
