@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<style>
+  html { background-color: black; color: white; }
+  body { font-size: 200%; font-family: sans-serif; line-height: 150%; }
+</style>
+<body>
+  Please insert USB key with content.
+</body>
+<script>
+  function getAjax(url, success) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState>3 && xhr.status==200) success(xhr.responseText);
+    };
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.send();
+    return xhr;
+  }
+
+  window.setInterval(() => {
+    getAjax('/check', data => {
+      if (data === 'exists' || data === 'new') {
+        window.location.reload();
+      }
+    })
+  }, 2000);
+</script>
+</html>

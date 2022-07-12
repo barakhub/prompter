@@ -5,7 +5,10 @@ const markdownIt = require('markdown-it')({breaks: true});
 const ejs = require('ejs');
 
 const TEMPLATE = __dirname + '/templates/index.html';
+const MISSING = __dirname + '/templates/missing.html';
 
+// One last motify time for two files. Yeh, whatever last wins.
+let lastModifyTime = 0;
 
 const app = express()
 
@@ -25,18 +28,28 @@ const argv = yargs
 
 const port = argv.port
 
-const fileLocation = '/home'
-
 app.get('/', async (req, res) => {
   const markdown = await loadFile();
-  if (markdown) {
-    const content = markdownIt.render(markdown);
-    const template = await fs.readFile(TEMPLATE, { encoding: 'utf8' });
-    const htmlContent = ejs.render(template, { content: content });
-    res.send(htmlContent);
+  const content = markdown ? markdownIt.render(markdown) : '';
+  const templateFile = markdown ? TEMPLATE : MISSING;
+  const template = await fs.readFile(templateFile, { encoding: 'utf8' });
+  const htmlContent = ejs.render(template, { content: content });
+  res.send(htmlContent);
+});
+
+app.get('/check', async (req, res) => {
+  const isTemplate = req.query.t === '1';
+  const modifyTime = await getModifyTime(isTemplate ? TEMPLATE : argv.file);
+  let result = '';
+  if (modifyTime === 0) {
+    result = 'missing';
+  } else if (modifyTime > lastModifyTime) {
+    lastModifyTime = modifyTime;
+    result = 'new';
   } else {
-    res.send('file not found');
+    result = 'exists';
   }
+  res.send(result);
 });
 
 console.log('Running in ', __dirname);
@@ -45,12 +58,20 @@ app.listen(port, () => {
   console.log(`Prompter app listening on port ${port}`);
 })
 
+async function getModifyTime(file) {
+  try {
+    const stats = await fs.stat(file);
+    return stats.mtimeMs;
+  } catch(e) {
+    return 0;
+  }
+}
+
 async function loadFile() {
   try {
     const data = await fs.readFile(argv.file, { encoding: 'utf8' });
     return data;
   } catch(error) {
-    console.info('Could not load file: ' + error)
     return null;
   }
 }

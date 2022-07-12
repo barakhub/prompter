@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <style>
-  html { background-color: black; color: white; }
+  html { background-color: grey; color: white; }
   body { font-size: 200%; font-family: sans-serif; line-height: 150%; }
 </style>
 <body>
@@ -28,12 +28,33 @@
 
   window.setInterval(() => {
     if (scrollUp) {
-      document.body.style.backgroundColor = 'red';
+      window.scrollBy(0, -10);
     } else if (scrollDown) {
-      document.body.style.backgroundColor = '#040';
+      window.scrollBy(0, 10);
     } else {
-      document.body.style.backgroundColor = 'black';
+      // skip
     }
   }, 100);
+
+  window.setInterval(() => {
+    getAjax('/check?t=1', data => {
+      console.info(data);
+      if (data === 'new') {
+        window.location.reload();
+      }
+    })
+  }, 2000);
+
+  function getAjax(url, success) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState>3 && xhr.status==200) success(xhr.responseText);
+    };
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.send();
+    return xhr;
+  }
+
 </script>
 </html>
