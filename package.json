@@ -10,6 +10,9 @@
   "author": "barakori@gmail.com",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "markdown-it": "^13.0.1",
+    "showdown": "^2.1.0",
+    "yargs": "^17.5.1"
   }
 }
