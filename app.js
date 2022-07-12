@@ -1,7 +1,11 @@
 const yargs = require('yargs')
 const express = require('express')
 const fs = require('fs/promises');
-var markdownIt = require('markdown-it')({breaks: true});
+const markdownIt = require('markdown-it')({breaks: true});
+const ejs = require('ejs');
+
+const TEMPLATE = __dirname + '/templates/index.html';
+
 
 const app = express()
 
@@ -26,13 +30,16 @@ const fileLocation = '/home'
 app.get('/', async (req, res) => {
   const markdown = await loadFile();
   if (markdown) {
-    const html = markdownIt.render(markdown);
-    res.send(html);
+    const content = markdownIt.render(markdown);
+    const template = await fs.readFile(TEMPLATE, { encoding: 'utf8' });
+    const htmlContent = ejs.render(template, { content: content });
+    res.send(htmlContent);
   } else {
     res.send('file not found');
   }
 });
 
+console.log('Running in ', __dirname);
 console.log(`Looking for file ${argv.file}`);
 app.listen(port, () => {
   console.log(`Prompter app listening on port ${port}`);

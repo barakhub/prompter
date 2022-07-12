@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<style>
+  html { background-color: black; color: white; }
+  body { font-size: 200%; font-family: sans-serif; line-height: 150%; }
+</style>
+<body>
+  <%- content %>
+</body>
+<script>
+  let scrollUp = false;
+  let scrollDown = false;
+
+  document.body.addEventListener('keydown', event => {
+    keyEvent(event.key, true);
+  });
+  document.body.addEventListener('keyup', event => {
+    keyEvent(event.key, false);
+  });
+
+  function keyEvent(key, isDown) {
+    if (event.key === '-') {
+      scrollUp = isDown;
+    } else if (event.key === '=') {
+      scrollDown = isDown;
+    }
+  }
+
+  window.setInterval(() => {
+    if (scrollUp) {
+      document.body.style.backgroundColor = 'red';
+    } else if (scrollDown) {
+      document.body.style.backgroundColor = '#040';
+    } else {
+      document.body.style.backgroundColor = 'black';
+    }
+  }, 100);
+</script>
+</html>
