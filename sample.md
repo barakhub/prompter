@@ -1,6 +1,37 @@
-## This is a sample markdown
+# While My Guitar
 
-### Hotel California
+I look at you all
+See the love there that's sleeping
+While my guitar gently weeps
+I look at the floor
+And I see it needs sweeping
+Still my guitar gently weeps
+
+I don't know why nobody told you
+How to unfold your love
+I don't know how someone controlled you
+They bought and sold you
+
+I look at the world
+And I notice it's turning
+While my guitar gently weeps
+With every mistake
+We must surely be learning
+Still my guitar gently weeps
+
+I don't know how you were diverted
+You were perverted too
+I don't know how you were inverted
+No one alerted you
+
+I look at you all
+See the love there that's sleeping
+While my guitar gently weeps
+(Look) look at you all
+
+Still my guitar gently weeps
+
+## Hotel California
 
 On a dark desert highway
 Cool wind in my hair
@@ -104,4 +135,90 @@ To the place I was before
 שמאושרים כמונו אין
 ובדמיוני לראות אהבתי.
 איך ביחד נזדקן.
+
+
+----
+
+## Video Games
+
+Swinging in the backyard
+Pull up in your fast car
+Whistling my name
+
+Open up a beer
+And you say, "Get over here
+And play a video game"
+
+I'm in his favourite sundress
+Watchin' me get undressed
+Take that body downtown
+
+I say, "You the bestest"
+Lean in for a big kiss
+Put his favourite perfume on
+Go play your video game
+
+It's you, it's you, it's all for you
+Everything I do
+I tell you all the time
+Heaven is a place on earth with you
+Tell me all the things you wanna do
+I heard that you like the bad girls
+Honey, is that true?
+
+It's better than I ever even knew
+They say that the world was built for two
+Only worth living if somebody is loving you
+And, baby, now you do
+
+Singin' in the old bars
+Swingin' with the old stars
+Livin' for the fame
+
+Kissin' in the blue dark
+Playin' pool and wild darts
+Video games
+
+He holds me in his big arms
+Drunk and I am seeing stars
+This is all I think of
+
+Watchin' all our friends fall
+In and out of Old Paul's
+This is my idea of fun
+Playin' video games
+
+It's you, it's you, it's all for you
+Everything I do
+I tell you all the time
+Heaven is a place on earth with you
+Tell me all the things you wanna do
+I heard that you like the bad girls
+Honey, is that true?
+
+It's better than I ever even knew
+They say that the world was built for two
+Only worth living if somebody is loving you
+And, baby, now you do
+
+It's you, it's you, it's all for you
+Everything I do
+I tell you all the time
+Heaven is a place on earth with you
+Tell me all the things you wanna do
+I heard that you like the bad girls
+Honey, is that true?
+
+It's better than I ever even knew
+They say that the world was built for two
+Only worth living if somebody is loving you
+And, baby, now you do
+
+Hmm, hmm, hmm
+(Now you do)
+(Now you do)
+Now you do
+(Now, now you do)
+(Now you do)
+(Now you do)
 

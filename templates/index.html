@@ -3,7 +3,8 @@
 <style>
   html { background-color: #004; color: white; }
   body { font-size: 250%; font-family: sans-serif; line-height: 150%; }
-  #ontop { position: fixed; top: 20px; left: 20px; background-color: white; color: black }
+  #ontop { position: fixed; top: 0px; left: 0px; background-color: red; color: yellow;
+  height: 15vh; width: 100%; display: none; }
 </style>
 <body>
   <%- content %>
@@ -13,7 +14,18 @@
   let scrollUp = false;
   let scrollDown = false;
 
-  let resetCount = 0;
+  let dclickTime = 0;
+  let nextPrevTime = 0;
+  let showAlt = false;
+
+  let upPress = false;
+  let downPress = false;
+
+  const onTop = document.getElementById('ontop');
+
+  const chapterPositions = Array.from(document.querySelectorAll('h1,h2')).map(elem => elem.offsetTop).sort((a, b) => a - b);
+  chapterPositions.push(document.body.scrollHeight);
+  console.info(chapterPositions);
 
   document.body.addEventListener('keydown', event => {
     keyEvent(event.key, true);
@@ -30,17 +42,63 @@
     }
   }
 
+  function showAltOnTop(show) {
+    showAlt = show;
+    onTop.style.display = show ? 'block' : '';
+  }
+
   window.setInterval(() => {
+    const now = Date.now();
     if (scrollUp && scrollDown) {
-      if (resetCount++ > 30) {
-        window.scrollTo(0, 0);
+      if (dclickTime == 0) {
+        dclickTime = now;
+      } else {
+        const dclickDelta = now - dclickTime;
+        if (dclickDelta > 1000 && !showAlt) {
+          onTop.style.display = 'block';
+          showAltOnTop(true);
+        } else if (dclickDelta > 2000) {
+          window.scrollTo(0, 0);
+          dclickTime = 0;
+          showAltOnTop(false);
+          onTop.style.display = '';
+        }
+      }
+    } else if (nextPrevTime !== 0) {
+      const nextPrevDelta = now - nextPrevTime;
+      if (nextPrevDelta > 2000) {
+        nextPrevTime = 0;
+        upPress = false;
+        downPress = false;
+        showAltOnTop(false);
+      } else if (nextPrevDelta > 100) {
+        if (scrollUp) {
+          upPress = true;
+        } else if (upPress) {
+          nextPrevTime = now;
+          // Got up one song.
+          scrollToChapter(false);
+        }
+        if (scrollDown) {
+          downPress = true;
+        } else if (downPress) {
+          nextPrevTime = now;
+          // Got down one song
+          scrollToChapter(true);
+        }
+      } else {
+        upPress = false;
+        downPress = false;
       }
     } else {
-      resetCount = 0;
+      if (dclickTime != 0) {
+        nextPrevTime = now;
+        dclickTime = 0;
+      }
       if (scrollUp) {
-        window.scrollBy(0, -5);
+        window.scrollBy(0, -10);
       } else if (scrollDown) {
-        window.scrollBy(0, 5);
+        window.scrollBy(0, 10);
       } else {
         // skip
       }
@@ -63,6 +121,24 @@
       }
     });
   }, 5000);
+
+  function scrollToChapter(isNext) {
+    let newPos = -1;
+    const currPos = window.scrollY + onTop.clientHeight;
+    const ind = chapterPositions.findIndex(pos => pos >= currPos);
+    if (isNext) {
+      const nextInd = (currPos == chapterPositions[ind]) ? ind + 1 : ind;
+      if (nextInd < chapterPositions.length - 1) {
+        newPos = Math.max(0, chapterPositions[nextInd] - onTop.clientHeight);
+      }
+    } else {
+      const prevInd = (currPos == chapterPositions[ind]) ? ind - 1 : ind - 2;
+      newPos = Math.max(0, chapterPositions[prevInd] - onTop.clientHeight);
+    }
+    if (newPos != -1) {
+      window.scrollTo(0, newPos);
+    }
+  }
 
   function getAjax(url, success) {
     var xhr = new XMLHttpRequest();
