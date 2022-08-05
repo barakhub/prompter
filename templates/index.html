@@ -57,6 +57,7 @@
         if (dclickDelta > 1000 && !showAlt) {
           onTop.style.display = 'block';
           showAltOnTop(true);
+	  nextPrevTime = 0;
         } else if (dclickDelta > 2000) {
           window.scrollTo(0, 0);
           dclickTime = 0;
