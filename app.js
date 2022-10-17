@@ -47,7 +47,7 @@ app.get('/check', async (req, res) => {
   const modifyTime = await getModifyTime(fileName);
   const cacheTime = await getModifyTime(CONTENT_CACHE);
   let result = '';
-  if (modifyTime === 0 && && cacheTime === 0) {
+  if (modifyTime === 0 && cacheTime === 0) {
     result = 'missing';
   } else if (modifyTime > cacheTime) {
     await fs.copyFile(fileName, CONTENT_CACHE);

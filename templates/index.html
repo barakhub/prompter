@@ -13,6 +13,7 @@
 <script>
   let scrollUp = false;
   let scrollDown = false;
+  let middlePress = false;
 
   let dclickTime = 0;
   let nextPrevTime = 0;
@@ -35,10 +36,12 @@
   });
 
   function keyEvent(key, isDown) {
-    if (event.key === '-') {
+    if (event.key === '=') {
       scrollDown = isDown;
-    } else if (event.key === '=') {
+    } else if (event.key === '-') {
       scrollUp = isDown;
+    } else if (event.key === '0') {
+      middlePress = isDown;
     }
   }
 
@@ -49,7 +52,7 @@
 
   window.setInterval(() => {
     const now = Date.now();
-    if (scrollUp && scrollDown) {
+    if (middlePress || (scrollUp && scrollDown)) {
       if (dclickTime == 0) {
         dclickTime = now;
       } else {
