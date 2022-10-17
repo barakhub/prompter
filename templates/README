@@ -1,0 +1,20 @@
+
+
+crontab -e
+@reboot sudo /usr/bin/node /home/pi/prompter/app.js -f /mnt/test/content.txt
+
+/boot/config.txt
+dtoverlay=gpio-key,gpio=4,active_low=1,pull=up,label=minus,keycode=12
+dtoverlay=gpio-key,gpio=27,active_low=1,pull=up,label=equals,keycode=13
+
+/boot/fullpageos.txt
+http://localhost:3000/
+
+/etc/fstab
+UUID=183C-FF8B /mnt/test vfat defaults,auto,users,rw,nofail,umask=000 0 0
+
+
+
+Simulate Keystroke from a GPIO button
+https://forums.raspberrypi.com/viewtopic.php?t=255659
+
