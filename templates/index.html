@@ -106,8 +106,9 @@
     }
   }, 33);
 
+  // Periodically check if this file (the HTML template file) was changed.
   window.setInterval(() => {
-    getAjax('/check?t=1', data => {
+    getAjax('/checkt', data => {
       if (data === 'new') {
         window.location.reload();
       }
@@ -115,6 +116,9 @@
   }, 2000);
 
 
+  // Periodically check if the content file (with the lyrics) has changed.
+  // Reload if needed. Note that if the content file is missing, the reload
+  // action will actually load the `missing.html` template.
   window.setInterval(() => {
     getAjax('/check', data => {
       if (data === 'new' || data === 'missing') {
