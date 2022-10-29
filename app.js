@@ -32,12 +32,27 @@ const port = argv.port
 
 app.get('/', async (req, res) => {
   const markdown = await loadFile();
-  const content = markdown ? markdownIt.render(markdown) : '';
+  let content = markdown ? markdownIt.render(markdown) : '';
+  content = rtlWrap(content, 'p');
+  content = rtlWrap(content, 'h2');
   const templateFile = markdown ? TEMPLATE : MISSING;
   const template = await fs.readFile(templateFile, { encoding: 'utf8' });
   const htmlContent = ejs.render(template, { content: content });
   res.send(htmlContent);
 });
+
+function rtlWrap(content, tag) {
+  const elem = `<${tag}>`;
+  let pos = content.indexOf(elem);
+  while (pos != -1) {
+    const firstLetter = content.charCodeAt(pos + elem.length);
+    if (firstLetter >= 0x05D0 && firstLetter <= 0x05FF) {
+      content = content.substring(0, pos) + `<${tag} class="heb">` + content.substring(pos + elem.length);
+    }
+    pos = content.indexOf(elem, pos + elem.length);
+  }
+  return content;
+}
 
 /**
  * Checks if the content file has been modified.
@@ -78,6 +93,8 @@ app.get('/checkt', async (req, res) => {
 
 console.log('Running in ', __dirname);
 console.log(`Looking for file ${argv.file}`);
+console.log(`Cache file in ${CONTENT_CACHE}`);
+
 app.listen(port, () => {
   console.log(`Prompter app listening on port ${port}`);
 })
